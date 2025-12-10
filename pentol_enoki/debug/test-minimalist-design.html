@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Minimalist Design - Siap Santap</title>
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="frontend/css/responsive.css">
+    <style>
+        .test-section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+        .test-section h2 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .color-swatch {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-sm);
+            margin: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .color-label {
+            display: block;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="frontend/pages/index.html" class="logo">
+                <img src="frontend/assets/logo.jpg" alt="Siap Santap Logo">
+                <span>Siap Santap</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Test Page</a></li>
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">Cart <span class="cart-badge">3</span></a></li>
+                <li><a href="#" class="btn btn-primary">Login</a></li>
+            </ul>
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>🎨 Test Minimalist Design</h1>
+            <p>Halaman test untuk verifikasi desain minimalis baru</p>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="test-section">
+            <h2>Color Palette</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <div class="color-swatch" style="background: var(--primary-color);"></div>
+                    <span class="color-label">Primary<br>#FF6B6B</span>
+                </div>
+                <div>
+                    <div class="color-swatch" style="background: var(--primary-dark);"></div>
+                    <span class="color-label">Primary Dark<br>#EE5A52</span>
+                </div>
+                <div>
+                    <div class="color-swatch" style="background: var(--bg-light);"></div>
+                    <span class="color-label">BG Light<br>#F8F9FA</span>
+                </div>
+                <div>
+                    <div class="color-swatch" style="background: var(--bg-white);"></div>
+                    <span class="color-label">BG White<br>#FFFFFF</span>
+                </div>
+                <div>
+                    <div class="color-swatch" style="background: var(--text-dark);"></div>
+                    <span class="color-label">Text Dark<br>#2D3436</span>
+                </div>
+                <div>
+                    <div class="color-swatch" style="background: var(--text-gray);"></div>
+                    <span class="color-label">Text Gray<br>#636E72</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="test-section">
+            <h2>Typography</h2>
+            <h1>Heading 1 - 2rem</h1>
+            <h2>Heading 2 - 1.75rem</h2>
+            <h3>Heading 3 - 1.5rem</h3>
+            <h4>Heading 4 - 1.25rem</h4>
+            <p>Body text - 15px. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p style="font-size: 14px;">Small text - 14px. Lorem ipsum dolor sit amet.</p>
+            <p style="font-size: 13px;">Extra small text - 13px. Lorem ipsum dolor.</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="test-section">
+            <h2>Buttons</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-primary" disabled>Disabled Button</button>
+                <button class="btn btn-primary btn-block" style="max-width: 300px;">Block Button</button>
+            </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div class="test-section">
+            <h2>Product Cards</h2>
+            <div class="products-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="product-card">
+                    <img src="frontend/assets/placeholder.jpg" alt="Product" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Nasi Goreng Spesial</h3>
+                        <p class="product-description">Nasi goreng dengan telur, ayam, dan sayuran segar</p>
+                        <p class="product-price">Rp 25.000</p>
+                        <p class="product-stock">Stok: 50</p>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">Add to Cart</button>
+                            <button class="btn btn-secondary">Detail</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="frontend/assets/placeholder.jpg" alt="Product" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Mie Ayam Bakso</h3>
+                        <p class="product-description">Mie ayam dengan bakso dan pangsit goreng</p>
+                        <p class="product-price">Rp 20.000</p>
+                        <p class="product-stock">Stok: 30</p>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">Add to Cart</button>
+                            <button class="btn btn-secondary">Detail</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="frontend/assets/placeholder.jpg" alt="Product" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Es Teh Manis</h3>
+                        <p class="product-description">Teh manis dingin yang menyegarkan</p>
+                        <p class="product-price">Rp 5.000</p>
+                        <p class="product-stock">Stok: 100</p>
+                        <div class="product-actions">
+                            <button class="btn btn-primary">Add to Cart</button>
+                            <button class="btn btn-secondary">Detail</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms -->
+        <div class="test-section">
+            <h2>Form Elements</h2>
+            <form>
+                <div class="form-group">
+                    <label>Text Input</label>
+                    <input type="text" placeholder="Enter text">
+                </div>
+                <div class="form-group">
+                    <label>Email Input</label>
+                    <input type="email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Select</label>
+                    <select>
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Textarea</label>
+                    <textarea rows="3" placeholder="Enter message"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label">Checkbox Label</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <!-- Badges -->
+        <div class="test-section">
+            <h2>Status Badges</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <span class="badge badge-pending">Pending</span>
+                <span class="badge badge-processing">Processing</span>
+                <span class="badge badge-shipped">Shipped</span>
+                <span class="badge badge-delivered">Delivered</span>
+                <span class="badge badge-cancelled">Cancelled</span>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="test-section">
+            <h2>Cards & Shadows</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <div style="padding: 1.5rem; background: var(--bg-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);">
+                    <h4>Shadow SM</h4>
+                    <p style="font-size: 14px; color: var(--text-gray);">Subtle shadow for cards</p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--bg-white); border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+                    <h4>Shadow MD</h4>
+                    <p style="font-size: 14px; color: var(--text-gray);">Medium shadow for hover</p>
+                </div>
+                <div style="padding: 1.5rem; background: var(--bg-white); border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+                    <h4>Shadow LG</h4>
+                    <p style="font-size: 14px; color: var(--text-gray);">Large shadow for modals</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Responsive Test -->
+        <div class="test-section">
+            <h2>Responsive Test</h2>
+            <p>Resize browser window untuk test responsive design:</p>
+            <ul style="color: var(--text-gray); font-size: 14px;">
+                <li><strong>Desktop (> 1024px):</strong> 3-4 kolom product grid</li>
+                <li><strong>Tablet (768px - 1024px):</strong> 2 kolom product grid</li>
+                <li><strong>Mobile (< 768px):</strong> 1 kolom, mobile menu</li>
+            </ul>
+        </div>
+
+        <!-- Success Message -->
+        <div class="test-section">
+            <h2>Notifications</h2>
+            <button class="btn btn-primary" onclick="showTestNotification('success')">Show Success</button>
+            <button class="btn btn-secondary" onclick="showTestNotification('error')">Show Error</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Siap Santap. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showTestNotification(type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? '#27AE60' : '#E74C3C'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = type === 'success' ? '✅ Success message!' : '❌ Error message!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

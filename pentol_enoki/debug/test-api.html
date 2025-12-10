@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API - Siap Santap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #FF4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #CC0000;
+        }
+        .result {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #FF4444;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            border-left-color: #4CAF50;
+        }
+        .error {
+            border-left-color: #F44336;
+        }
+        h1 {
+            color: #FF4444;
+        }
+        h2 {
+            color: #2C2C2C;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test API Siap Santap</h1>
+    <p>Gunakan halaman ini untuk test semua API endpoint</p>
+
+    <div class="test-section">
+        <h2>1. Test Database Connection</h2>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="db-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Products API</h2>
+        <button onclick="testProducts()">Get All Products</button>
+        <div id="products-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Auth API</h2>
+        <button onclick="testAuthCheck()">Check Session</button>
+        <button onclick="testLogin()">Test Login (admin/password)</button>
+        <button onclick="testLogout()">Test Logout</button>
+        <div id="auth-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Test Categories API</h2>
+        <button onclick="testCategories()">Get Categories</button>
+        <div id="categories-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Test Orders API</h2>
+        <button onclick="testOrders()">Get Orders</button>
+        <div id="orders-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. Path Information</h2>
+        <div class="result">
+Current URL: <span id="current-url"></span>
+API Base: backend/api/
+Expected Product API: <span id="product-api-url"></span>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'backend/api';
+
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('product-api-url').textContent = window.location.origin + window.location.pathname.replace('test-api.html', '') + API_BASE + '/products.php';
+
+        async function testDatabase() {
+            const result = document.getElementById('db-result');
+            result.style.display = 'block';
+            result.textContent = 'Testing database connection...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.textContent = '✅ Database connection successful!\n\n' + JSON.stringify(data, null, 2);
+                } else {
+                    result.className = 'result error';
+                    result.textContent = '❌ Database connection failed!\n\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message + '\n\nMake sure:\n1. XAMPP MySQL is running\n2. Database "siap_santap" exists\n3. Tables are created';
+            }
+        }
+
+        async function testProducts() {
+            const result = document.getElementById('products-result');
+            result.style.display = 'block';
+            result.textContent = 'Loading products...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.textContent = `✅ Found ${data.data.length} products\n\n` + JSON.stringify(data, null, 2);
+                } else {
+                    result.className = 'result error';
+                    result.textContent = '❌ Failed to load products\n\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testAuthCheck() {
+            const result = document.getElementById('auth-result');
+            result.style.display = 'block';
+            result.textContent = 'Checking session...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth.php?action=check`);
+                const data = await response.json();
+                
+                result.className = 'result success';
+                result.textContent = '✅ Auth check successful\n\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testLogin() {
+            const result = document.getElementById('auth-result');
+            result.style.display = 'block';
+            result.textContent = 'Testing login...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth.php?action=login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'password'
+                    })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.textContent = '✅ Login successful!\n\n' + JSON.stringify(data, null, 2);
+                } else {
+                    result.className = 'result error';
+                    result.textContent = '❌ Login failed\n\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testLogout() {
+            const result = document.getElementById('auth-result');
+            result.style.display = 'block';
+            result.textContent = 'Testing logout...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth.php?action=logout`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                result.className = 'result success';
+                result.textContent = '✅ Logout successful\n\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testCategories() {
+            const result = document.getElementById('categories-result');
+            result.style.display = 'block';
+            result.textContent = 'Loading categories...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/categories.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.textContent = `✅ Found ${data.data.length} categories\n\n` + JSON.stringify(data, null, 2);
+                } else {
+                    result.className = 'result error';
+                    result.textContent = '❌ Failed to load categories\n\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        async function testOrders() {
+            const result = document.getElementById('orders-result');
+            result.style.display = 'block';
+            result.textContent = 'Loading orders...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/orders.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.className = 'result success';
+                    result.textContent = `✅ Found ${data.data.length} orders\n\n` + JSON.stringify(data, null, 2);
+                } else {
+                    result.className = 'result error';
+                    result.textContent = '❌ Failed to load orders\n\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = '❌ Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

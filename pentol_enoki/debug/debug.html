@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Siap Santap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        .result {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #FF6B35;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            border-left-color: #4CAF50;
+        }
+        .error {
+            border-left-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Siap Santap - Debug Tool</h1>
+    
+    <div class="test-section">
+        <h2>1. Test API Connection</h2>
+        <button onclick="testAPI()">Test API</button>
+        <div id="api-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Database Connection</h2>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="db-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Products API</h2>
+        <button onclick="testProducts()">Get Products</button>
+        <div id="products-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Test Auth Check</h2>
+        <button onclick="testAuth()">Check Auth</button>
+        <div id="auth-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Test Categories API</h2>
+        <button onclick="testCategories()">Get Categories</button>
+        <div id="categories-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. Browser Console Errors</h2>
+        <p>Buka Developer Tools (F12) dan periksa tab Console untuk error JavaScript</p>
+    </div>
+
+    <script>
+        const API_BASE = 'backend/api';
+
+        function showResult(elementId, data, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `result ${isSuccess ? 'success' : 'error'}`;
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/test.php`);
+                const data = await response.json();
+                showResult('api-result', data, data.success);
+            } catch (error) {
+                showResult('api-result', { error: error.message }, false);
+            }
+        }
+
+        async function testDatabase() {
+            try {
+                const response = await fetch('test-connection.php');
+                const text = await response.text();
+                showResult('db-result', { response: text }, text.includes('successful'));
+            } catch (error) {
+                showResult('db-result', { error: error.message }, false);
+            }
+        }
+
+        async function testProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                showResult('products-result', data, data.success);
+            } catch (error) {
+                showResult('products-result', { error: error.message }, false);
+            }
+        }
+
+        async function testAuth() {
+            try {
+                const response = await fetch(`${API_BASE}/auth.php?action=check`);
+                const data = await response.json();
+                showResult('auth-result', data, data.success);
+            } catch (error) {
+                showResult('auth-result', { error: error.message }, false);
+            }
+        }
+
+        async function testCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categories.php`);
+                const data = await response.json();
+                showResult('categories-result', data, data.success);
+            } catch (error) {
+                showResult('categories-result', { error: error.message }, false);
+            }
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Debug tool loaded. Click buttons to test each component.');
+        });
+    </script>
+</body>
+</html>

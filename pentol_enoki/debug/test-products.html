@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Products - Siap Santap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #FF4444;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            background: #FF4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #CC0000;
+        }
+        .btn-secondary {
+            background: #2C2C2C;
+        }
+        .btn-secondary:hover {
+            background: #4A4A4A;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .test-card {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #FF4444;
+        }
+        .test-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2C2C2C;
+        }
+        .test-card p {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .status-success { background: #4CAF50; color: white; }
+        .status-error { background: #F44336; color: white; }
+        .status-pending { background: #FFA500; color: white; }
+        pre {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .checklist li:hover {
+            background: #f9f9f9;
+            padding-left: 0.5rem;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            color: #FF4444;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        #test-results {
+            margin-top: 1rem;
+        }
+        .result-item {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+        .result-success {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+        }
+        .result-error {
+            background: #ffebee;
+            border-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Products - Siap Santap</h1>
+    
+    <div class="test-section">
+        <h2>1. Quick Links</h2>
+        <a href="frontend/pages/index.html" class="btn" target="_blank">🏠 Home Page</a>
+        <a href="frontend/pages/menu.html" class="btn" target="_blank">📋 Menu Page</a>
+        <a href="frontend/pages/admin.html" class="btn" target="_blank">⚙️ Admin Page</a>
+        <a href="backend/api/products.php" class="btn btn-secondary" target="_blank">🔌 API Products</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Automated API Tests</h2>
+        <button class="btn" onclick="runAllTests()">▶️ Run All Tests</button>
+        <button class="btn btn-secondary" onclick="clearResults()">🗑️ Clear Results</button>
+        <div id="test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Manual Testing Checklist</h2>
+        
+        <h3>Home Page</h3>
+        <ul class="checklist">
+            <li>Home page terbuka tanpa error</li>
+            <li>Produk featured ditampilkan (maksimal 6)</li>
+            <li>Gambar produk muncul atau placeholder</li>
+            <li>Harga ditampilkan dengan format Rupiah</li>
+            <li>Tombol "Tambah ke Keranjang" berfungsi</li>
+            <li>Animasi saat menambahkan ke cart</li>
+            <li>Cart badge bertambah</li>
+            <li>Notifikasi sukses muncul</li>
+        </ul>
+        
+        <h3>Menu Page</h3>
+        <ul class="checklist">
+            <li>Menu page terbuka tanpa error</li>
+            <li>Semua produk ditampilkan</li>
+            <li>Filter kategori berfungsi</li>
+            <li>Smooth scrolling berfungsi</li>
+            <li>Custom scrollbar terlihat</li>
+            <li>Hover effect pada product card</li>
+            <li>Add to cart berfungsi</li>
+        </ul>
+        
+        <h3>Admin - Tambah Produk</h3>
+        <ul class="checklist">
+            <li>Login sebagai admin berhasil</li>
+            <li>Tab "Produk" dapat dibuka</li>
+            <li>Tombol "Tambah Produk" membuka modal</li>
+            <li>Form tampil dengan baik</li>
+            <li>Dropdown kategori terisi</li>
+            <li>Semua field dapat diisi</li>
+            <li>Validasi required field berfungsi</li>
+            <li>Submit form berhasil</li>
+            <li>Produk muncul di daftar</li>
+            <li>Notifikasi sukses muncul</li>
+        </ul>
+        
+        <h3>Admin - Edit Produk</h3>
+        <ul class="checklist">
+            <li>Tombol "Edit" membuka modal</li>
+            <li>Data produk ter-load di form</li>
+            <li>Semua field terisi dengan benar</li>
+            <li>Dapat mengubah data</li>
+            <li>Submit update berhasil</li>
+            <li>Perubahan tersimpan</li>
+        </ul>
+        
+        <h3>Admin - Arsipkan Produk</h3>
+        <ul class="checklist">
+            <li>Tombol "Arsipkan" menampilkan konfirmasi</li>
+            <li>Produk berhasil diarsipkan</li>
+            <li>Badge "Archived" muncul</li>
+            <li>Produk tidak muncul di home/menu</li>
+            <li>Tombol berubah jadi "Aktifkan"</li>
+            <li>Dapat mengaktifkan kembali</li>
+        </ul>
+        
+        <h3>Admin - Hapus Produk</h3>
+        <ul class="checklist">
+            <li>Tombol "Hapus" menampilkan warning</li>
+            <li>Produk berhasil dihapus</li>
+            <li>Produk hilang dari daftar</li>
+            <li>Produk tidak muncul di home/menu</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Test Scenarios</h2>
+        
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>Scenario 1: Produk Baru</h3>
+                <p>1. Login sebagai admin</p>
+                <p>2. Tambah produk baru</p>
+                <p>3. Periksa di home page</p>
+                <p>4. Periksa di menu page</p>
+                <p>5. Test add to cart</p>
+            </div>
+            
+            <div class="test-card">
+                <h3>Scenario 2: Edit Produk</h3>
+                <p>1. Buka admin panel</p>
+                <p>2. Edit produk existing</p>
+                <p>3. Ubah harga dan stok</p>
+                <p>4. Simpan perubahan</p>
+                <p>5. Verifikasi di frontend</p>
+            </div>
+            
+            <div class="test-card">
+                <h3>Scenario 3: Stok Habis</h3>
+                <p>1. Set stok produk = 0</p>
+                <p>2. Periksa di home/menu</p>
+                <p>3. Tombol harus disabled</p>
+                <p>4. Text "Stok Habis"</p>
+                <p>5. Tidak bisa add to cart</p>
+            </div>
+            
+            <div class="test-card">
+                <h3>Scenario 4: Produk Tidak Tersedia</h3>
+                <p>1. Uncheck "Tersedia"</p>
+                <p>2. Simpan produk</p>
+                <p>3. Produk tidak muncul di home</p>
+                <p>4. Produk tidak muncul di menu</p>
+                <p>5. Badge di admin</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. Browser Console Checks</h2>
+        <p>Buka Developer Tools (F12) dan periksa:</p>
+        
+        <h3>Home Page Console:</h3>
+        <pre>Loading featured products...
+Home products result: {success: true, data: [...]}
+Featured products count: 6</pre>
+        
+        <h3>Admin Page Console:</h3>
+        <pre>Loading products for admin...
+Admin products result: {success: true, data: [...]}
+Submitting product data: {...}
+Product save result: {success: true, ...}</pre>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. Database Checks</h2>
+        <p>Jalankan query berikut di phpMyAdmin:</p>
+        
+        <h3>Lihat Semua Produk:</h3>
+        <pre>SELECT * FROM products ORDER BY created_at DESC;</pre>
+        
+        <h3>Lihat Produk Aktif:</h3>
+        <pre>SELECT * FROM products 
+WHERE is_available = 1 AND is_archived = 0;</pre>
+        
+        <h3>Lihat Produk dengan Kategori:</h3>
+        <pre>SELECT p.*, c.category_name 
+FROM products p 
+LEFT JOIN categories c ON p.category_id = c.category_id;</pre>
+    </div>
+
+    <script>
+        const API_BASE = 'backend/api';
+        const results = document.getElementById('test-results');
+        
+        function addResult(test, success, message) {
+            const div = document.createElement('div');
+            div.className = `result-item result-${success ? 'success' : 'error'}`;
+            div.innerHTML = `
+                <strong>${success ? '✓' : '✗'} ${test}</strong><br>
+                <small>${message}</small>
+            `;
+            results.appendChild(div);
+        }
+        
+        function clearResults() {
+            results.innerHTML = '';
+        }
+        
+        async function testGetAllProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    addResult(
+                        'GET All Products',
+                        true,
+                        `Found ${data.data.length} products`
+                    );
+                    return true;
+                } else {
+                    addResult('GET All Products', false, 'Invalid response format');
+                    return false;
+                }
+            } catch (error) {
+                addResult('GET All Products', false, error.message);
+                return false;
+            }
+        }
+        
+        async function testGetProductById() {
+            try {
+                // Get first product
+                const response1 = await fetch(`${API_BASE}/products.php`);
+                const data1 = await response1.json();
+                
+                if (!data1.success || data1.data.length === 0) {
+                    addResult('GET Product by ID', false, 'No products to test');
+                    return false;
+                }
+                
+                const productId = data1.data[0].product_id;
+                const response2 = await fetch(`${API_BASE}/products.php?id=${productId}`);
+                const data2 = await response2.json();
+                
+                if (data2.success && data2.data) {
+                    addResult(
+                        'GET Product by ID',
+                        true,
+                        `Product ID ${productId}: ${data2.data.product_name}`
+                    );
+                    return true;
+                } else {
+                    addResult('GET Product by ID', false, 'Product not found');
+                    return false;
+                }
+            } catch (error) {
+                addResult('GET Product by ID', false, error.message);
+                return false;
+            }
+        }
+        
+        async function testProductsHaveRequiredFields() {
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                
+                if (!data.success || data.data.length === 0) {
+                    addResult('Required Fields Check', false, 'No products to test');
+                    return false;
+                }
+                
+                const product = data.data[0];
+                const requiredFields = ['product_id', 'product_name', 'price', 'stock', 'is_available', 'is_archived'];
+                const missingFields = requiredFields.filter(field => !(field in product));
+                
+                if (missingFields.length === 0) {
+                    addResult(
+                        'Required Fields Check',
+                        true,
+                        'All required fields present'
+                    );
+                    return true;
+                } else {
+                    addResult(
+                        'Required Fields Check',
+                        false,
+                        `Missing fields: ${missingFields.join(', ')}`
+                    );
+                    return false;
+                }
+            } catch (error) {
+                addResult('Required Fields Check', false, error.message);
+                return false;
+            }
+        }
+        
+        async function testAvailableProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products.php`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    addResult('Available Products Check', false, 'API error');
+                    return false;
+                }
+                
+                const available = data.data.filter(p => p.is_available && !p.is_archived);
+                const unavailable = data.data.filter(p => !p.is_available || p.is_archived);
+                
+                addResult(
+                    'Available Products Check',
+                    true,
+                    `Available: ${available.length}, Unavailable: ${unavailable.length}`
+                );
+                return true;
+            } catch (error) {
+                addResult('Available Products Check', false, error.message);
+                return false;
+            }
+        }
+        
+        async function runAllTests() {
+            clearResults();
+            
+            addResult('Starting Tests', true, 'Running automated tests...');
+            
+            await testGetAllProducts();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testGetProductById();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testProductsHaveRequiredFields();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testAvailableProducts();
+            
+            addResult('Tests Complete', true, 'All automated tests finished');
+        }
+        
+        // Add click handlers to checklist items
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.style.textDecoration === 'line-through') {
+                    this.style.textDecoration = 'none';
+                    this.style.opacity = '1';
+                } else {
+                    this.style.textDecoration = 'line-through';
+                    this.style.opacity = '0.5';
+                }
+            });
+        });
+        
+        // Auto-check if running on localhost
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            alert('⚠️ Warning: This test page should be run on localhost');
+        }
+    </script>
+</body>
+</html>

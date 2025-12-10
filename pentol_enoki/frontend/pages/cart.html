@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang - Siap Santap</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="../assets/logo.jpg" alt="Siap Santap Logo">
+                <span>Siap Santap</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="cart.html" class="active">Cart <span class="cart-badge" style="display:none;">0</span></a></li>
+                <li class="auth-links">
+                    <a href="login.html" class="btn btn-primary">Login</a>
+                </li>
+            </ul>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>🛒 Keranjang Belanja</h1>
+            <p>Kelola produk yang ingin Anda beli</p>
+        </div>
+        
+        <div class="cart-container">
+            <div class="cart-items" id="cart-items">
+                <p style="text-align: center; padding: 2rem; color: #666;">Keranjang kosong</p>
+            </div>
+            
+            <div class="cart-summary">
+                <h2>💰 Ringkasan Belanja</h2>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Pajak (10%):</span>
+                    <span id="tax">Rp 0</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total">
+                    <span><strong>Total:</strong></span>
+                    <span id="total"><strong>Rp 0</strong></span>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="checkout()" id="checkout-btn" disabled>
+                    🛍️ Lanjut ke Checkout
+                </button>
+                <button class="btn btn-secondary btn-block" onclick="clearCart()">
+                    🗑️ Kosongkan Keranjang
+                </button>
+                <a href="menu.html" class="btn btn-secondary btn-block" style="text-align: center;">
+                    ← Lanjut Belanja
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Siap Santap. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/cart.js"></script>
+</body>
+</html>

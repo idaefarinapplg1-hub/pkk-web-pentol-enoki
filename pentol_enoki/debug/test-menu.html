@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Menu - Siap Santap</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #FF4444;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            background: #FF4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #CC0000;
+        }
+        .btn-secondary {
+            background: #2C2C2C;
+        }
+        .btn-secondary:hover {
+            background: #4A4A4A;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            color: #FF4444;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Menu Page - Siap Santap</h1>
+    
+    <div class="test-section">
+        <h2>1. Quick Links</h2>
+        <a href="frontend/pages/menu.html" class="btn" target="_blank">Open Menu Page</a>
+        <a href="frontend/pages/menu-debug.html" class="btn btn-secondary" target="_blank">Open Debug Page</a>
+        <a href="backend/api/products.php" class="btn btn-secondary" target="_blank">Test API Direct</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Checklist Testing</h2>
+        <ul class="checklist">
+            <li>Menu page terbuka tanpa error</li>
+            <li>Produk ditampilkan dengan benar</li>
+            <li>Gambar produk muncul (atau placeholder)</li>
+            <li>Filter kategori berfungsi</li>
+            <li>Tombol "Tambah ke Keranjang" berfungsi</li>
+            <li>Cart badge menampilkan jumlah item</li>
+            <li>Halaman bisa di-scroll ke bawah</li>
+            <li>Smooth scrolling berfungsi</li>
+            <li>Hover effect pada product card berfungsi</li>
+            <li>Responsive di mobile view</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Browser Console Check</h2>
+        <p>Buka Developer Tools (F12) dan periksa:</p>
+        <ul>
+            <li><strong>Console Tab:</strong> Tidak ada error merah</li>
+            <li><strong>Network Tab:</strong> Request ke <code>products.php</code> status 200</li>
+            <li><strong>Console Logs:</strong> Harus muncul:
+                <ul>
+                    <li><code>Loading products...</code></li>
+                    <li><code>Products result: {success: true, data: [...]}</code></li>
+                    <li><code>Filtered products: X</code></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Test Scroll Behavior</h2>
+        <ol>
+            <li>Buka menu page</li>
+            <li>Scroll ke bawah menggunakan mouse wheel</li>
+            <li>Perhatikan smooth scrolling effect</li>
+            <li>Periksa custom scrollbar (merah)</li>
+            <li>Test di berbagai ukuran layar</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. Test Add to Cart</h2>
+        <ol>
+            <li>Klik tombol "Tambah ke Keranjang" pada produk</li>
+            <li>Perhatikan animasi scale pada product card</li>
+            <li>Periksa notifikasi sukses muncul</li>
+            <li>Periksa cart badge bertambah</li>
+            <li>Buka halaman cart untuk verifikasi</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. Test Responsive</h2>
+        <ol>
+            <li>Buka Developer Tools (F12)</li>
+            <li>Toggle Device Toolbar (Ctrl+Shift+M)</li>
+            <li>Test ukuran:
+                <ul>
+                    <li>Mobile: 375px</li>
+                    <li>Tablet: 768px</li>
+                    <li>Desktop: 1200px</li>
+                </ul>
+            </li>
+            <li>Periksa layout menyesuaikan dengan baik</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>7. Troubleshooting</h2>
+        <p><strong>Jika menu tidak muncul:</strong></p>
+        <ol>
+            <li>Periksa database memiliki data produk</li>
+            <li>Test API langsung: <a href="backend/api/products.php" target="_blank">products.php</a></li>
+            <li>Gunakan debug page untuk melihat response</li>
+            <li>Periksa console browser untuk error</li>
+            <li>Clear browser cache (Ctrl+Shift+Delete)</li>
+        </ol>
+        
+        <p><strong>Jika scroll tidak smooth:</strong></p>
+        <ol>
+            <li>Update browser ke versi terbaru</li>
+            <li>Clear cache dan reload (Ctrl+F5)</li>
+            <li>Periksa CSS file ter-load dengan benar</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>8. Expected Results</h2>
+        <p><strong>Menu Page harus menampilkan:</strong></p>
+        <ul>
+            <li>✅ Header dengan logo dan navigation</li>
+            <li>✅ Banner "Menu Kami" dengan emoji</li>
+            <li>✅ Filter kategori dropdown</li>
+            <li>✅ Grid produk (3-4 kolom di desktop)</li>
+            <li>✅ Product cards dengan gambar, nama, harga, stok</li>
+            <li>✅ Tombol "Tambah ke Keranjang"</li>
+            <li>✅ Cart badge dengan jumlah item</li>
+            <li>✅ Smooth scroll behavior</li>
+            <li>✅ Custom scrollbar merah</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>📚 Documentation</h2>
+        <p>Untuk informasi lengkap tentang perbaikan, lihat:</p>
+        <a href="MENU-FIXES.md" class="btn btn-secondary">MENU-FIXES.md</a>
+    </div>
+    
+    <script>
+        // Auto-check if running on localhost
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            alert('⚠️ Warning: This test page should be run on localhost');
+        }
+        
+        // Add click handlers to checklist items
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function() {
+                if (this.style.textDecoration === 'line-through') {
+                    this.style.textDecoration = 'none';
+                    this.style.opacity = '1';
+                } else {
+                    this.style.textDecoration = 'line-through';
+                    this.style.opacity = '0.5';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

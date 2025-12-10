@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Debug - Siap Santap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .debug-panel {
+            background: #f0f0f0;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .debug-panel pre {
+            background: white;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="../assets/logo.jpg" alt="Siap Santap">
+                <span>Siap Santap</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html" class="active">Menu</a></li>
+                <li><a href="cart.html">Cart <span class="cart-badge" style="display: none;">0</span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Menu Debug Page</h1>
+        
+        <div class="debug-panel">
+            <h3>API Response:</h3>
+            <pre id="api-response">Loading...</pre>
+        </div>
+        
+        <div class="debug-panel">
+            <h3>Console Logs:</h3>
+            <pre id="console-logs"></pre>
+        </div>
+        
+        <button class="btn btn-primary" onclick="testAPI()">Test API</button>
+        <button class="btn btn-secondary" onclick="location.href='menu.html'">Go to Menu</button>
+        
+        <hr style="margin: 2rem 0;">
+        
+        <div id="products-container" class="products-grid">
+            <div class="spinner"></div>
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const logs = [];
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            logs.push(['LOG', ...args]);
+            updateLogs();
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            logs.push(['ERROR', ...args]);
+            updateLogs();
+            originalError.apply(console, args);
+        };
+        
+        function updateLogs() {
+            document.getElementById('console-logs').textContent = 
+                logs.map(l => l.join(' ')).join('\n');
+        }
+        
+        async function testAPI() {
+            try {
+                console.log('Testing API connection...');
+                console.log('API Base:', API_BASE);
+                
+                const response = await fetch(`${API_BASE}/products.php`);
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                document.getElementById('api-response').textContent = 
+                    JSON.stringify(data, null, 2);
+                
+                if (data.success && data.data) {
+                    displayProducts(data.data);
+                }
+            } catch (error) {
+                console.error('API Test Error:', error);
+                document.getElementById('api-response').textContent = 
+                    'Error: ' + error.message;
+            }
+        }
+        
+        function displayProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (!products || products.length === 0) {
+                container.innerHTML = '<p>No products found</p>';
+                return;
+            }
+            
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image_url || '../assets/placeholder.jpg'}" 
+                         alt="${product.product_name}" 
+                         class="product-image">
+                    <div class="product-info">
+                        <h3>${product.product_name}</h3>
+                        <p>${product.description || ''}</p>
+                        <div class="product-price">${formatCurrency(product.price)}</div>
+                        <p>Stock: ${product.stock}</p>
+                        <p>Available: ${product.is_available ? 'Yes' : 'No'}</p>
+                        <p>Archived: ${product.is_archived ? 'Yes' : 'No'}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Auto-test on load
+        testAPI();
+    </script>
+</body>
+</html>

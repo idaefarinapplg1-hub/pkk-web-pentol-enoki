@@ -1,0 +1,381 @@
+/**
+ * Responsive Design for Siap Santap - Minimalist Edition
+ */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+    
+    .hero {
+        padding: 2.5rem 1.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    nav {
+        padding: 1rem;
+    }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+    /* Navigation */
+    nav {
+        padding: 1rem;
+        height: auto;
+        min-height: 64px;
+    }
+    
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-white);
+        flex-direction: column;
+        padding: 0.5rem;
+        display: none;
+        box-shadow: var(--shadow-md);
+        border-top: 1px solid var(--border-color);
+        gap: 0;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+    
+    .nav-links li {
+        width: 100%;
+    }
+    
+    .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+    
+    .logo {
+        font-size: 1.125rem;
+    }
+    
+    .logo img {
+        height: 28px;
+        width: 28px;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 2rem 1rem;
+        margin: 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* Products */
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .product-card {
+        margin-bottom: 0;
+    }
+    
+    .product-image {
+        height: 180px;
+    }
+    
+    /* Cart */
+    .cart-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .cart-item {
+        grid-template-columns: 60px 1fr;
+        gap: 0.75rem;
+        padding: 0.875rem;
+    }
+    
+    .cart-item img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .cart-item-quantity {
+        grid-column: 1 / -1;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+    
+    .cart-item-total {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+    
+    .cart-item-remove {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .cart-summary {
+        position: static;
+    }
+    
+    /* Checkout */
+    .checkout-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-item {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    
+    .checkout-item img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .checkout-item-total {
+        width: 100%;
+        text-align: right;
+        margin-top: 0.5rem;
+    }
+    
+    /* Forms */
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 0.625rem 1rem;
+    }
+    
+    .product-actions {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    
+    .product-actions .btn {
+        flex: 1;
+    }
+    
+    /* Admin */
+    .admin-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.625rem 0.875rem;
+        font-size: 13px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-table {
+        overflow-x: auto;
+    }
+    
+    .admin-table table {
+        min-width: 600px;
+    }
+    
+    .product-item {
+        flex-direction: column;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .action-buttons button,
+    .action-buttons select {
+        width: 100%;
+    }
+    
+    /* Modal */
+    .modal-content {
+        margin: 5% 1rem;
+        padding: 1.25rem;
+    }
+    
+    /* Page Header */
+    .page-header {
+        padding: 1rem 0;
+    }
+    
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Container */
+    .container {
+        padding: 1rem;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .filter-select {
+        max-width: 100%;
+    }
+}
+
+/* Small Mobile (max 480px) */
+@media (max-width: 480px) {
+    .hero {
+        padding: 1.5rem 0.875rem;
+        margin: 0.75rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero p {
+        font-size: 0.9375rem;
+    }
+    
+    .product-name {
+        font-size: 1rem;
+    }
+    
+    .product-price {
+        font-size: 1.25rem;
+    }
+    
+    .product-info {
+        padding: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1.375rem;
+    }
+    
+    .container {
+        padding: 0.875rem;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .logo img {
+        height: 24px;
+        width: 24px;
+    }
+    
+    .btn {
+        padding: 0.5rem 0.875rem;
+        font-size: 13px;
+    }
+    
+    .cart-summary,
+    .checkout-form-section,
+    .checkout-items-section {
+        padding: 1rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.375rem;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero p {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    header,
+    .nav-links,
+    .btn,
+    .action-buttons {
+        display: none;
+    }
+    
+    .container {
+        max-width: 100%;
+    }
+    
+    .product-card,
+    .cart-item {
+        break-inside: avoid;
+    }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+    
+    .product-image {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    /* Optional: Add dark mode styles here if needed */
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

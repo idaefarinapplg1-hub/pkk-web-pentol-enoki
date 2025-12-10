@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Upload Produk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        #preview {
+            margin-top: 10px;
+            max-width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Upload Produk</h1>
+    <p>Form ini untuk testing fitur upload foto dan custom harga produk.</p>
+    
+    <form id="testForm">
+        <div class="form-group">
+            <label for="product_name">Nama Produk *</label>
+            <input type="text" id="product_name" name="product_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Deskripsi</label>
+            <textarea id="description" name="description" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Harga (Rp) *</label>
+            <input type="text" id="price" name="price" required placeholder="Contoh: 15000, 25500, 12750">
+            <small>Masukkan harga sesuai keinginan</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="stock">Stok *</label>
+            <input type="number" id="stock" name="stock" required value="100">
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Upload Foto Produk</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <img id="preview" style="display: none;">
+        </div>
+        
+        <button type="submit">💾 Simpan Produk</button>
+    </form>
+    
+    <div id="result" class="result"></div>
+    
+    <script>
+        const API_URL = 'backend/api';
+        
+        // Preview image
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Format price input
+        document.getElementById('price').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        
+        // Submit form
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            formData.set('is_available', '1');
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_URL}/products.php`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✓ Produk berhasil disimpan! ID: ' + result.product_id;
+                    this.reset();
+                    document.getElementById('preview').style.display = 'none';
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '✗ Gagal: ' + (result.message || 'Unknown error');
+                }
+                
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '✗ Error: ' + error.message;
+                resultDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

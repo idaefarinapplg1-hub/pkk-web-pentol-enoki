@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Archive API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #FF4444;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #FF4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #CC0000;
+        }
+        .btn-secondary {
+            background: #2C2C2C;
+        }
+        .btn-success {
+            background: #4CAF50;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .product-card {
+            border: 2px solid #ddd;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-card.archived {
+            border-color: #9E9E9E;
+            opacity: 0.7;
+        }
+        .product-card.available {
+            border-color: #4CAF50;
+        }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .badge-available { background: #4CAF50; color: white; }
+        .badge-archived { background: #9E9E9E; color: white; }
+        #console {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-success { color: #4CAF50; }
+        .log-error { color: #F44336; }
+        .log-info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Archive API</h1>
+    
+    <div class="section">
+        <h2>1. Actions</h2>
+        <button class="btn" onclick="loadProducts()">🔄 Load Products</button>
+        <button class="btn btn-success" onclick="enableAllProducts()">✓ Enable All</button>
+        <button class="btn btn-secondary" onclick="clearConsole()">🗑️ Clear Console</button>
+    </div>
+    
+    <div class="section">
+        <h2>2. Console</h2>
+        <div id="console">Waiting...</div>
+    </div>
+    
+    <div class="section">
+        <h2>3. Products</h2>
+        <div id="products-list">Loading...</div>
+    </div>
+
+    <script src="frontend/js/app.js"></script>
+    <script>
+        const consoleDiv = document.getElementById('console');
+        const logs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push({ time: timestamp, message, type });
+            updateConsole();
+        }
+        
+        function updateConsole() {
+            consoleDiv.innerHTML = logs.map(l => 
+                `<div class="log-${l.type}">[${l.time}] ${escapeHtml(l.message)}</div>`
+            ).join('');
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function clearConsole() {
+            logs.length = 0;
+            updateConsole();
+        }
+        
+        async function loadProducts() {
+            log('Loading products...', 'info');
+            
+            try {
+                const result = await api.get('products.php?archived=true');
+                log(`API Response: ${JSON.stringify(result)}`, 'info');
+                
+                if (result.success) {
+                    log(`✓ Found ${result.data.length} products`, 'success');
+                    displayProducts(result.data);
+                } else {
+                    log(`✗ API Error: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function displayProducts(products) {
+            const container = document.getElementById('products-list');
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p>No products found</p>';
+                return;
+            }
+            
+            container.innerHTML = products.map(product => {
+                const isArchived = product.is_archived;
+                const isAvailable = product.is_available;
+                const status = isArchived ? 'archived' : (isAvailable ? 'available' : 'unavailable');
+                
+                return `
+                    <div class="product-card ${status}">
+                        <div>
+                            <strong>${product.product_name}</strong>
+                            <span class="badge badge-${isArchived ? 'archived' : 'available'}">
+                                ${isArchived ? 'Archived' : (isAvailable ? 'Available' : 'Unavailable')}
+                            </span>
+                            <br>
+                            <small>ID: ${product.product_id} | Price: ${formatCurrency(product.price)} | Stock: ${product.stock}</small>
+                        </div>
+                        <div>
+                            ${isArchived 
+                                ? `<button class="btn btn-success" onclick="unarchiveProduct(${product.product_id})">📂 Unarchive</button>`
+                                : `<button class="btn btn-secondary" onclick="archiveProduct(${product.product_id})">📁 Archive</button>`
+                            }
+                            ${!isAvailable || isArchived
+                                ? `<button class="btn btn-success" onclick="enableProduct(${product.product_id})">✓ Enable</button>`
+                                : `<button class="btn btn-secondary" onclick="disableProduct(${product.product_id})">✗ Disable</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        async function archiveProduct(productId) {
+            log(`Archiving product ${productId}...`, 'info');
+            
+            try {
+                const result = await api.put('products.php', {
+                    product_id: productId,
+                    is_archived: true
+                });
+                
+                log(`Archive API Response: ${JSON.stringify(result)}`, 'info');
+                
+                if (result.success) {
+                    log(`✓ Product ${productId} archived successfully`, 'success');
+                    loadProducts();
+                } else {
+                    log(`✗ Failed to archive: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function unarchiveProduct(productId) {
+            log(`Unarchiving product ${productId}...`, 'info');
+            
+            try {
+                const result = await api.put('products.php', {
+                    product_id: productId,
+                    is_archived: false
+                });
+                
+                log(`Unarchive API Response: ${JSON.stringify(result)}`, 'info');
+                
+                if (result.success) {
+                    log(`✓ Product ${productId} unarchived successfully`, 'success');
+                    loadProducts();
+                } else {
+                    log(`✗ Failed to unarchive: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function enableProduct(productId) {
+            log(`Enabling product ${productId}...`, 'info');
+            
+            try {
+                const result = await api.put('products.php', {
+                    product_id: productId,
+                    is_available: true,
+                    is_archived: false
+                });
+                
+                log(`Enable API Response: ${JSON.stringify(result)}`, 'info');
+                
+                if (result.success) {
+                    log(`✓ Product ${productId} enabled successfully`, 'success');
+                    loadProducts();
+                } else {
+                    log(`✗ Failed to enable: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function disableProduct(productId) {
+            log(`Disabling product ${productId}...`, 'info');
+            
+            try {
+                const result = await api.put('products.php', {
+                    product_id: productId,
+                    is_available: false
+                });
+                
+                log(`Disable API Response: ${JSON.stringify(result)}`, 'info');
+                
+                if (result.success) {
+                    log(`✓ Product ${productId} disabled successfully`, 'success');
+                    loadProducts();
+                } else {
+                    log(`✗ Failed to disable: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function enableAllProducts() {
+            if (!confirm('Enable all products?')) return;
+            
+            log('Enabling all products...', 'info');
+            
+            try {
+                const result = await api.get('products.php?archived=true');
+                
+                if (result.success) {
+                    for (const product of result.data) {
+                        await enableProduct(product.product_id);
+                        await new Promise(resolve => setTimeout(resolve, 200));
+                    }
+                    log('✓ All products enabled!', 'success');
+                }
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-load on page load
+        window.addEventListener('load', () => {
+            log('Page loaded', 'info');
+            loadProducts();
+        });
+    </script>
+</body>
+</html>

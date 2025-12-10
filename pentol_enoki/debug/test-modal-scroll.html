@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Modal Scroll - Siap Santap</title>
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="frontend/css/admin.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2196F3;
+        }
+        .test-success {
+            background: #e8f5e9;
+            border-left-color: #4CAF50;
+        }
+        .test-warning {
+            background: #fff3e0;
+            border-left-color: #FF9800;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #FF4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            background: #CC0000;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #FF4444;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test Modal Scroll</h1>
+        
+        <div class="test-info">
+            <h3>📋 Tujuan Test</h3>
+            <p>Memastikan modal popup tambah produk dapat di-scroll dengan baik dan semua elemen terlihat.</p>
+        </div>
+        
+        <div class="test-info test-warning">
+            <h3>⚠️ Perhatian</h3>
+            <p>Test ini mensimulasikan modal produk. Pastikan Anda dapat:</p>
+            <ul>
+                <li>Scroll ke bawah untuk melihat semua field</li>
+                <li>Melihat tombol "Simpan" dan "Batal" di bagian bawah</li>
+                <li>Close button (×) tetap terlihat saat scroll</li>
+                <li>Judul modal tetap terlihat saat scroll</li>
+            </ul>
+        </div>
+        
+        <button class="btn" onclick="openTestModal()">🚀 Buka Modal Test</button>
+        
+        <h2>Checklist Testing</h2>
+        <ul class="checklist">
+            <li>Modal terbuka dengan benar</li>
+            <li>Dapat scroll ke bawah di dalam modal</li>
+            <li>Semua field form terlihat</li>
+            <li>Close button (×) tetap terlihat saat scroll</li>
+            <li>Judul modal sticky di atas</li>
+            <li>Tombol submit sticky di bawah</li>
+            <li>Scrollbar terlihat dengan jelas</li>
+            <li>Dapat mengisi semua field</li>
+            <li>Dapat menutup modal dengan × atau tombol Batal</li>
+            <li>Responsive di layar kecil</li>
+        </ul>
+        
+        <div class="test-info test-success">
+            <h3>✅ Kriteria Sukses</h3>
+            <p>Test dianggap berhasil jika:</p>
+            <ol>
+                <li>Modal dapat di-scroll dengan smooth</li>
+                <li>Semua field dapat diakses dan diisi</li>
+                <li>Tombol submit selalu terlihat</li>
+                <li>Close button selalu terlihat</li>
+                <li>Tidak ada elemen yang terpotong</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTestModal()">&times;</span>
+            <h2 id="modal-title">➕ Tambah Produk Baru (TEST)</h2>
+            <form id="productForm" onsubmit="handleTestSubmit(event)">
+                <input type="hidden" name="product_id" id="product_id">
+                
+                <div class="form-group">
+                    <label for="product_name">Nama Produk *</label>
+                    <input type="text" name="product_name" id="product_name" required 
+                           placeholder="Contoh: Nasi Goreng Special">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category_select">Kategori</label>
+                    <select name="category_id" id="category_select">
+                        <option value="">Pilih Kategori</option>
+                        <option value="1">Makanan</option>
+                        <option value="2">Minuman</option>
+                        <option value="3">Snack</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Deskripsi</label>
+                    <textarea name="description" id="description" rows="4" 
+                              placeholder="Deskripsi produk..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Harga (Rp) *</label>
+                        <input type="number" name="price" id="price" required min="0" step="1000"
+                               placeholder="15000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stock">Stok *</label>
+                        <input type="number" name="stock" id="stock" required min="0"
+                               placeholder="100">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image_url">URL Gambar</label>
+                    <input type="text" name="image_url" id="image_url"
+                           placeholder="https://example.com/image.jpg atau ../assets/product.jpg">
+                    <small style="color: #666; display: block; margin-top: 0.25rem;">
+                        Kosongkan untuk menggunakan gambar default
+                    </small>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" name="is_available" id="is_available" checked
+                               style="margin-right: 0.5rem; width: auto;">
+                        <span>Produk Tersedia untuk Dijual</span>
+                    </label>
+                </div>
+                
+                <!-- Extra fields untuk test scroll -->
+                <div class="form-group">
+                    <label for="test_field_1">Test Field 1 (untuk test scroll)</label>
+                    <input type="text" name="test_field_1" id="test_field_1"
+                           placeholder="Field tambahan untuk test scroll">
+                </div>
+                
+                <div class="form-group">
+                    <label for="test_field_2">Test Field 2 (untuk test scroll)</label>
+                    <textarea name="test_field_2" id="test_field_2" rows="3"
+                              placeholder="Textarea tambahan untuk test scroll"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="test_field_3">Test Field 3 (untuk test scroll)</label>
+                    <input type="text" name="test_field_3" id="test_field_3"
+                           placeholder="Field tambahan untuk memastikan scroll bekerja">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Simpan Produk (TEST)
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeTestModal()">
+                        ❌ Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openTestModal() {
+            document.getElementById('productModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent body scroll
+        }
+        
+        function closeTestModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore body scroll
+        }
+        
+        function handleTestSubmit(event) {
+            event.preventDefault();
+            alert('✅ Form submit berhasil!\n\nIni adalah test mode, data tidak akan disimpan.\n\nJika Anda dapat melihat alert ini, berarti:\n- Scroll bekerja dengan baik\n- Semua field dapat diakses\n- Tombol submit dapat diklik');
+            closeTestModal();
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) {
+                closeTestModal();
+            }
+        }
+        
+        // Add click handlers to checklist
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function() {
+                if (this.style.textDecoration === 'line-through') {
+                    this.style.textDecoration = 'none';
+                    this.style.opacity = '1';
+                    this.style.background = '#f9f9f9';
+                } else {
+                    this.style.textDecoration = 'line-through';
+                    this.style.opacity = '0.6';
+                    this.style.background = '#e8f5e9';
+                }
+            });
+        });
+        
+        // Auto-open modal after 1 second
+        setTimeout(() => {
+            if (confirm('Buka modal test secara otomatis?')) {
+                openTestModal();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

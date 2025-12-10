@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Siap Santap</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <header class="admin-page-header">
+        <nav>
+            <a href="index.html" class="logo admin-logo">
+                <img src="../assets/logo.jpg" alt="Siap Santap Logo">
+                <span>Siap Santap Admin</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">🏠 Home</a></li>
+                <li class="auth-links"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="admin-header">
+            <div class="admin-header-content">
+                <h1>🎛️ Admin Dashboard</h1>
+                <p>Kelola toko online Anda dengan mudah</p>
+            </div>
+            <div class="admin-user-info">
+                <span class="user-role">👤 Administrator</span>
+                <span class="user-email" id="admin-email"></span>
+            </div>
+        </div>
+        
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="showTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="showTab('products')">Produk</button>
+            <button class="tab-btn" onclick="showTab('orders')">Pesanan</button>
+            <button class="tab-btn" onclick="showTab('reports')">Laporan</button>
+            <button class="tab-btn" onclick="showTab('messages')">Pesan</button>
+        </div>
+        
+        <div id="dashboard-tab" class="tab-content active">
+            <div class="section-header">
+                <h2>📊 Ringkasan Penjualan</h2>
+                <p>Statistik penjualan terkini</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Pendapatan Hari Ini</h3>
+                    <p id="daily-revenue" class="stat-value">Rp 0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pendapatan Minggu Ini</h3>
+                    <p id="weekly-revenue" class="stat-value">Rp 0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pendapatan Bulan Ini</h3>
+                    <p id="monthly-revenue" class="stat-value">Rp 0</p>
+                </div>
+            </div>
+            
+            <div class="section-header">
+                <h3>🏆 Produk Terlaris</h3>
+            </div>
+            <div id="top-products"></div>
+        </div>
+        
+        <div id="products-tab" class="tab-content">
+            <div class="section-header">
+                <div>
+                    <h2>📦 Manajemen Produk</h2>
+                    <p>Kelola produk yang dijual di toko</p>
+                </div>
+                <div class="header-actions">
+                    <div class="filter-group">
+                        <label for="product-filter">Filter:</label>
+                        <select id="product-filter" onchange="filterProducts(this.value)" class="filter-select">
+                            <option value="all">Semua Produk</option>
+                            <option value="active">Produk Aktif</option>
+                            <option value="archived">Produk Diarsipkan</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="showProductModal()">
+                        ➕ Tambah Produk
+                    </button>
+                </div>
+            </div>
+            <div id="products-list"></div>
+        </div>
+        
+        <div id="orders-tab" class="tab-content">
+            <div class="section-header">
+                <h2>🛍️ Manajemen Pesanan</h2>
+                <p>Kelola dan update status pesanan pelanggan</p>
+            </div>
+            <div id="orders-list"></div>
+        </div>
+        
+        <div id="reports-tab" class="tab-content">
+            <div class="section-header">
+                <h2>📈 Laporan Penjualan</h2>
+                <p>Lihat detail transaksi dan penjualan</p>
+            </div>
+            <div id="sales-report"></div>
+        </div>
+        
+        <div id="messages-tab" class="tab-content">
+            <div class="section-header">
+                <h2>💬 Pesan dari Pelanggan</h2>
+                <p>Baca dan balas pesan dari pelanggan</p>
+            </div>
+            <div id="messages-list"></div>
+        </div>
+    </main>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <h2 id="modal-title">Tambah Produk</h2>
+            <form id="productForm">
+                <input type="hidden" name="product_id" id="product_id">
+                
+                <div class="form-group">
+                    <label for="product_name">Nama Produk *</label>
+                    <input type="text" name="product_name" id="product_name" required 
+                           placeholder="Contoh: Nasi Goreng Special">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category_select">Kategori</label>
+                    <select name="category_id" id="category_select">
+                        <option value="">Pilih Kategori</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Deskripsi</label>
+                    <textarea name="description" id="description" rows="4" 
+                              placeholder="Deskripsi produk..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Harga (Rp) *</label>
+                        <input type="text" name="price" id="price" required
+                               placeholder="15000" oninput="formatPriceInput(this)">
+                        <small style="color: #666; display: block; margin-top: 0.25rem;">
+                            Masukkan harga sesuai keinginan (contoh: 15000, 25500, 100000)
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stock">Stok *</label>
+                        <input type="number" name="stock" id="stock" required min="0"
+                               placeholder="100">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image_upload">Upload Gambar Produk</label>
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" name="image" id="image_upload" accept="image/*"
+                               onchange="previewImage(this)" style="display: none;">
+                        <div class="upload-placeholder" onclick="document.getElementById('image_upload').click()">
+                            <div class="upload-icon">📸</div>
+                            <p>Klik untuk upload gambar</p>
+                            <small>JPG, PNG, GIF (Max 5MB)</small>
+                        </div>
+                        <div id="image_preview" style="display: none;">
+                            <img id="preview_img" src="" alt="Preview">
+                            <button type="button" class="remove-image-btn" onclick="removeImagePreview()">
+                                ❌ Hapus Gambar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image_url">Atau URL Gambar</label>
+                    <input type="text" name="image_url" id="image_url"
+                           placeholder="https://example.com/image.jpg atau ../assets/product.jpg"
+                           onchange="handleImageUrlChange(this)">
+                    <small style="color: #666; display: block; margin-top: 0.25rem;">
+                        Kosongkan jika sudah upload gambar di atas
+                    </small>
+                </div>
+                
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" name="is_available" id="is_available" checked
+                               style="margin-right: 0.5rem; width: auto;">
+                        <span>Produk Tersedia untuk Dijual</span>
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        💾 Simpan Produk
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">
+                        ❌ Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
